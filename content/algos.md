@@ -8,7 +8,22 @@ title = "algos"
 Algorithmen
 ===========
 
-Verschiedene Links zum Thema Algorithmus.
+Datenstrukturen
+---------------
+  * Hashmap
+	* http://attractivechaos.awardspace.com/khash.h.html
+
+Sortieralgorithmen
+-------------------
+
+  * Bubblesort
+  * Quicksort
+  * Mergesort
+  * Heapsort
+  * Treesort
+
+Verschiedene Informationen
+--------------------------
 
   * https://community.topcoder.com/tc?module=Static&d1=tutorials&d2=alg_index
   * https://community.topcoder.com/tc?module=MatchList
