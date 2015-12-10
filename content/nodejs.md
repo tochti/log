@@ -1,6 +1,6 @@
 +++
 date = "2015-12-03T17:04:15+01:00"
-draft = true
+draft = false
 title = "node.js"
 +++
 
@@ -14,7 +14,7 @@ Als ich mich zum erstenmal mit Node.js auseiander gesetzt hatte wollte ich ein s
 
 Wollen wir nichts weitermachen als ein paar Paar Roboter Tanzen zu lassen passiert noch nicht viel anders als JavaScript
 
-```JavaScript
+~~~javascript
 var Robo = function(n) {
   return {
     name: n,
@@ -28,7 +28,7 @@ var Robo = function(n) {
   r = new Robo(n);
   r.dance();
 });
-```
+~~~
 
 Aber in der Werbung sprechen sie doch alle von async. Wie läuft das nun alles ab?
 
@@ -36,7 +36,7 @@ Hier ein paar Beispiele und meine Gedanken dazu.
 
 Wenn man nun schon einmal etwas mit anderen Programmiersprachen zutun hatte wie z. Bsp. [Go](golang.org) ist man vielleicht ein wenig vertraut mit dem Konzept [Cuncurrency](https://www.youtube.com/watch?v=cN_DpYBzKso) (Nebenläufigkeit). In Go gibt es den Befehl go um eine sogenannte goroutine zu starten eine Funktionen die mit diesem Befehl gestart wird läuft dann gleichzeitig es wird nicht gewartet bis die Funktionen einen Reutrnwert zurück gibt es wird direkt mit dem nächsten Befehl weitergemacht. Also fragte ich mich ist das bei Node.js ebenso? Ich habe keine von keinem Befehel ähnlich dem go Befehl gehört. Aber es könnte ja sein das einfach alles so funktioniert, wer weiss.
 
-```JavaScript
+~~~javascript
 for (var x = 0; x < 100; x++) {
   console.log('1 - ' + x);
 }
@@ -44,11 +44,11 @@ for (var x = 0; x < 100; x++) {
 for (var x = 0; x < 100; x++) {
   console.log('2 - ' + x);
 } 
-```
+~~~
 
 Dann könnte es ja passieren das die console.log(..) ausgaben vermischt werden heißt einmal 1 - 1, 1 - 2, 1 - 3, 2 - 1, 1 - 4. Das passiert jedoch nicht. Auch dann nicht wenn man 1000000 Zeilen auf der Konsole ausgeben würde, der ablauf bleibt synchron. Vielleicht ist es so das nur Funktionen asynchron ausgeführt werden.
 
-```JavaScript
+~~~javascript
 function one() {
   for (var x = 0; x < 100; x++) {
     console.log('1 - ' + x);
@@ -63,13 +63,13 @@ function two() {
 
 one();
 two();
-```
+~~~
 
 es beleibt dabei alles schön in einer Reihenfolge.
 
 Zurück blieben einige ?? also erstmal was essen.
 
-```JavaScript
+~~~javascript
 setTimeout(function() {
   console.log('funky bacon!');
 }, 2);
@@ -79,13 +79,13 @@ for (var i = 100000000; i < 1000000000; i++) {
     console.log(Math.log(i));
   }
 }
-```
+~~~
 
 setTimeout sollte nach 2 millisekunden funky bacon! auf der Konsole ausgeben macht es aber nicht. Obwohl setTimeout eine von Node.js mitgelieferte non-blocking Funktion ist. Wird funky bacon! immer als letztes auf der Konsole ausgegeben. Aber wir kommen der Sache schon näher. Es wird immerhin schon einmal was ausgegeben auch wenn es viel zu spät ausgegeben wird. Es sieht so aus alle erst der JavaScript Code ausgeführt wird und danach die beantragten Events eingelöst werden.
 
 Noch ein interessantes Beispiel.
 
-```JavaScript
+~~~javascript
 setTimeout(function() {
   console.log('funky bacon!');
 }, 2);
@@ -100,11 +100,11 @@ return;
 
 console.log('after return');
 
-```
+~~~
 
 hier wird funky bacon! als letzte ausgegeben und nicht after return. Es ist sogar so das after return überhaupt nicht ausgegeben wird. Es scheint so als würde EventLoop erst ganz zum Schluß angestart werden. EventLoop jetzt also doch? Schaut man in node.cc sieht man das mittels uv_run_loop eine EventLoop gestart wird. Verwendet man EventLoop sieht Code normalerweis irgendwie so aus
 
-```
+~~~
 
 // new loop object
 loop = new EventLoop()
@@ -115,30 +115,30 @@ loop.add_event('x', callback)
 // Start loop 
 loop.run
 
-```
+~~~
 
 so oder so ähnlich kann man sich das bei Node.js auch vorstellen von Node.js wird eine neues EventLoop Objekt erzeugt. Dann kommt der Programmiere mit JavaScript und konfiguriert die Loop und fügt Events hinzu. Diese events werden aber mittels libuv Bibliothek hinzugefügt auch haben diese events nicht wirklich was mit der events JavaScript Bibliothek zu tun die mit Node.js ausgeliefert wird. Hierzu zwei Beispiele
 
-```JavaScript
+~~~javascript
 setTimeout(function() {
   console.log('Kung Fu!');
 }, 2000);
-```
+~~~
 
-```JavaScript
+~~~javascript
 var EventEmitter = require('events');
 var events = new EventEmitter();
 
 events.on('Kung', function() {
   console.log('FU!');
 });
-```
+~~~
 
 Auch konnte ich Aussagen finden wie "Node.js wird dann beenden wenn keine Events mehr vorhanden sind". Was uns direkt wieder zu unseren zwei Beispielen und unserer oberen Aussage führt. Zu erst warum Beendet sich das erste Programm erst nach 2 Sekunden und das zweite Beende sich sofort, müsste es nicht für immer weiterlaufen da niemand den Event Kung auslöst? Genau aus dem oben genannten Grund events hat nicht wirklich etwas zutun mit der EventLoop die in Node.js gestart wrid. Für die EventLoop, die mittels uv_run_loop gestart wird, können nur Events registriert werden die in [libuv definiert](https://nikhilm.github.io/uvbook/basics.html) sind.Diese Events haben meistens etwas mit Events zu tun die man beim Betriebsystemkernel hinterlegen kann. Das ist nun der Punkt an dem es wirklich non-blocking und asynchron wird.
 
 Hier noch ein paar Wort zu js events von Node.js diese sind nicht asynchron. Vereinfacht gesagt ist es ein Hash in dem Namen mit Arrays von Funktionen verbunden werden. Wird ein Events mittel emit ausgelöst werden alles hinterlegten Funktionen ausgeführt.
 
-```JavaScript
+~~~javascript
 var EventEmitter = require('events');
 var emitter = new EventEmitter();
 
@@ -156,9 +156,9 @@ emitter.on('go', run(2));
 emitter.on('go', run(3));
 
 emitter.emit('go');
-```
+~~~
 
-```JavaScript
+~~~javascript
 var EventEmitter = require('events');
 var emitter = new EventEmitter();
 
@@ -178,7 +178,7 @@ function run2() {
 
 run1();
 run2();
-```
+~~~
 
 Alles ziemlich synchron hier.
 
