@@ -1,12 +1,9 @@
 +++
 date = "2015-11-27T22:19:44+01:00"
 draft = true
-title = "python_arguments"
+title = "Python Funktionsparameter"
 
 +++
-
-Funktions Argumente
-===================
 
 Es gibt in Python veränderbare Typen und unveränderbare Typen. Lass uns mit den veränderbaren Typen beginnen
 

@@ -1,5 +1,8 @@
-Backbone
-========
++++
+date = "2015-11-25T09:07:27+01:00"
+draft = false
+title = "Backbone"
++++
 
 * Trailing Slash bei URL poroperty.
 * events bei view können nur auf Elemente gesetzt werden die sich im $el Element befinden.

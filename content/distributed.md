@@ -7,5 +7,5 @@ title = "distributed"
 
 Gossip Protocol
 ----------------
-http://www.hcs.ufl.edu/pubs/CC2000.pdf
-http://www.cs.cornell.edu/hopkik/Gossip%20Protocol.pdf
+* http://www.hcs.ufl.edu/pubs/CC2000.pdf
+* http://www.cs.cornell.edu/hopkik/Gossip%20Protocol.pdf
