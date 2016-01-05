@@ -5,13 +5,13 @@ title = "Enable hdmi video + sound"
 
 +++
 
-Das Ziel ist es Filme mit dem Notebook auf dem TV als Ausgabemedium anzuschauen
-Zu beantworten gilte es als, wie verdammt nochmal bekomme ich Bild und Ton über das HDMI Kabel.
+Das Ziel ist es Filme mittels Notebook mit dem TV als Ausgabemedium anzuschauen.
+Zu beantworten gilt es also folgendes, "wie verdammt nochmal bekomme ich Bild und Ton über das HDMI Kabel".
 
 Bild
 ----
 
-Starten wir mit dem Bild mittels xrandr kann man zwischen Verschieden Video eingängen hin und her schalten. Mann kann einiges damit anstellen. Für unseres Problem reichen folgendes Befehle
+Starten wir mit dem Bild mittels xrandr kann man zwischen Verschieden Videoeingängen hin und her schalten. Mann kann einiges damit anstellen. Für unseres Problem reichen folgende Befehle
 
 Find die Bezeichnung für den HDMI Ausgang
 
@@ -52,7 +52,7 @@ HDMI1 connected 1920x1080+0+0 (normal left inverted right x axis y axis) 160mm x
 VIRTUAL1 disconnected (normal left inverted right x axis y axis)
 ~~~
 
-Mit dem folgenden Befehl schalten wir den Laptop Display aus und HDMI1 Ausgang ein die Auflösung wird dabei automatisch bestimmt. Wenn ich bei mir das Display eDP1 nicht auschalte bekomme ich keine richtige Auflösung auf dem TV Bildschirm.
+Mit dem folgenden Befehl schalten wir den Laptop Display aus und den HDMI1 Ausgang ein. Die Auflösung für den HDMI1 Ausgang wird dabei automatisch bestimmt. Wenn ich bei mir das Display eDP1 nicht auschalte bekomme ich keine richtige Auflösung auf dem TV Bildschirm.
 
 ~~~bash
 xrandr --output eDP1 --off --output HDMI1 --auto
@@ -64,7 +64,7 @@ Damit der Bildschirm nicht ständig in Standbymodus fährt und der Bildschirmsch
 xset s off -dpms
 ~~~
 
-Kurze erkälerung des Befehls
+Kurze Erklärung des Befehls
 ~~~bash
 // turn off screensaver
 xset s off
@@ -129,7 +129,7 @@ Nun ist es möglich mittles der Umgebungsvariable ALSAPCM=myhdmi die standard So
 $(ALSAPCM=myhdmi firefox)
 ~~~
 
-Noch ein kurzer Hinweis. Zu beginn habe ich es nicht hinbekommen überhaupt einen Ton mit aplay auf den TV-Lautsprächern auszugeben. Daher dachte ich es wäre irgendwas Prinzipeles an der alsa konfiguration falsch. Jedoch habe ich dann mittels speaker-test es schlußendlich hinbekommen einen Ton auszugeben da hier die Kannal (-c 2) richtig verarbeitet wurde. Dies hat aus irgendwelchen Gründen bei aplay -c 2 nicht richtig funktioniert. Also am besten beides testen.
+Noch ein kurzer Hinweis. Zu beginn habe ich es nicht hinbekommen überhaupt einen Ton mit aplay auf den TV-Lautsprächern auszugeben. Daher dachte ich es wäre irgendwas Prinzipeles an der alsa konfiguration falsch. Jedoch habe ich dann mittels speaker-test es schlußendlich hinbekommen einen Ton auszugeben da hier die Kannal Angaben (-c 2) richtig verarbeitet wurde. Dies hat aus irgendwelchen Gründen bei aplay -c 2 nicht richtig funktioniert. Also am besten beides testen.
 
 ~~~bash
 speaker-test -D hw:1,3 -c 2
