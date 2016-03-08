@@ -137,3 +137,8 @@ Noch ein kurzer Hinweis. Zu beginn habe ich es nicht hinbekommen überhaupt eine
 speaker-test -D hw:1,3 -c 2
 ~~~
 
+
+Weiter Links zu asoundrc
+*) http://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html
+*) http://www.alsa-project.org/main/index.php/Asoundrc
+
