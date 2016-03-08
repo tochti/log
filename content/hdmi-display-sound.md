@@ -78,6 +78,8 @@ Aktivieren kann man beides wieder wie folgt
 xset s on +dpms
 ~~~
 
+https://wiki.archlinux.de/title/DPMS
+
 Ton
 ----
 
