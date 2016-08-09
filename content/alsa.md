@@ -7,6 +7,8 @@ Aktiviere eine Soundcard
 
 ~~~bash
 amixer set Master on
+# Wenn man mehrer Karten hat oder zu sonstigen Problemen kommt kann man probieren ob man mittels -c und vielleicht auch noch -D die Karten und das Device direkt ansprechen kann
+amixer -c 1 Master on
 ~~~
 
 Informationen über die Soundcards
