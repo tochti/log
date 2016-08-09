@@ -12,6 +12,8 @@ Datenstrukturen
 ---------------
   * Hashmap
 	* http://attractivechaos.awardspace.com/khash.h.html
+	* Btree
+		* http://www.csd.uoc.gr/~hy460/pdf/p650-lehman.pdf
 
 Sortieralgorithmen
 -------------------
@@ -33,3 +35,4 @@ Verschiedene Informationen
   * http://bigocheatsheet.com/
   * https://medium.com/life-learning/the-37-best-websites-to-learn-something-new-895e2cb0cad4#.xs3b00cao
   * http://sahandsaba.com/understanding-asyncio-node-js-python-3-4.html
+
