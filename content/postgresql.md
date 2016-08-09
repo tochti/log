@@ -1,5 +1,8 @@
 # PostgreSQL #
 
+## Tunning ##
+https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
+
 ## Konfigurations Parameter ##
 https://www.postgresql.org/docs/current/static/runtime-config.html
 
