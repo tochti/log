@@ -6,3 +6,5 @@
 * http://dave.cheney.net/2015/08/08/performance-without-the-event-loop
 * https://docs.google.com/document/d/1TTj4T2JO42uD5ID9e89oa0sLKhJYD0Y_kqxDv3I3XMw/edit?pref=2&pli=1
 * http://stackoverflow.com/questions/1714136/can-you-detect-how-many-threads-a-given-number-of-goroutines-will-create
+* https://www.youtube.com/watch?v=N3PWzBeLX2M&feature=youtu.be
+* https://manning-content.s3.amazonaws.com/download/a/d666b07-be97-457d-90cc-36d7e79f0989/Sample-Ch06.pdf
