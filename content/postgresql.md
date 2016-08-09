@@ -1,5 +1,8 @@
 # PostgreSQL #
 
+## Konfigurations Parameter ##
+https://www.postgresql.org/docs/current/static/runtime-config.html
+
 ## Error codes ##
 https://www.postgresql.org/docs/9.5/static/errcodes-appendix.html
 
