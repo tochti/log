@@ -10,3 +10,5 @@
 * https://manning-content.s3.amazonaws.com/download/a/d666b07-be97-457d-90cc-36d7e79f0989/Sample-Ch06.pdf
 * https://morsmachine.dk/go-scheduler
 * https://morsmachine.dk/netpoller
+* https://github.com/golang/go/blob/4fc9565ffce91c4299903f7c17a275f0786734a1/src/runtime/chan.go
+* https://docs.google.com/document/d/1yIAYmbvL3JxOKOjuCyon7JhW4cSv1wy5hC0ApeGMV9s/pub
