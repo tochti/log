@@ -2,6 +2,8 @@
 date = "2015-12-03T17:04:15+01:00"
 draft = false
 title = "node.js"
+type = "post"
+categories = ["nodejs"]
 +++
 
 
