@@ -7,6 +7,8 @@ Datum: 30-08-20161
 ### Warum schreibe ich diesen Text ###
 Es ging mir nicht darum einzelnen Verfahren Technisch zu Beschreiben oder gar erschöfpend zu Beschreiben dazu fehlt mir bei weitem das Wissen. Es ging darum eine Übersicht über die Zusammenhänge zwischen Verfahren und Funktionen zu geben ebenso aufzuzeigen warum diese unterschiedliche Verfahren und Funktionen existieren. Weiter möchte ich anderen die Denkfehler ersparen wie ich sie gemacht. Die ganze Reise began damit das ich nicht verstanden habe warum man zum Erzeugen eines CSR (Certificate Signing Request) ein Private Key benötigt und woher der Public Key darin plötzlich herkamm obwohl ich diesen doch nie explizit erzeugt habe.
 
+Der Text richtet sich an Anfänger die einen Übersicht über die Zusammenhänge der Themen Verschlüsslung/Signierung und TLS bekommen möchten. Da die Kapitel aufeinander aufbauen ist es zu empfehlen das Dokument von oben nach unten zu lesen.
+
 ## Einführung ##
 
 Wie so oft in dieser Welt gab es eine Aufgabe welche gelöst werden mochte. Also lasst uns beginnen mit dieser Aufgabe. 
@@ -155,8 +157,9 @@ $ openssl dgst -sign darlene.pem -out vertrag.darlene.sign vertrag.txt
 
 Damit Darlene, nach getaner Arbeit, anspruch auf ihre hälfte hat und zeigen kann das Elliot tatsächlich die zweite Person war welche den Vertrag unterschrieben hat muss sie Kopien des vertrag.txt, vertrag.elliot.sign und den Public-Key von Elliot an sich nehmen.
 
-Die Welt ist unterworfen, der Tag nach Siegesfeier bricht an. Darlene ist Geschäftstüchtig und erhebt sogleich in Katrigerstimmung anspruch auf ihren Teil und zeigt sogleich das Unterzeichnerin des Vertrags ist.
+Die Welt ist unterworfen, der Tag nach der Siegesfeier bricht an. Darlene ist Geschäftstüchtig und erhebt sogleich, in Katrigerstimmung, anspruch auf ihren Anteil und zeigt sogleich das sie Unterzeichnerin des Vertrags ist.
 
+Dazu verwendet sie ihren Priavte-Key und ihre Signatur. Sie führt die Signatur über vertrag.txt nochmals durch und vergleicht die Ausgabe mit der damals erstellten Signatur da vertrag.txt noch immer der selbe ist sollte die Ausgabe ebenfalls die selbe sein.
 ```bash
 $ openssl dgst -preverify darlene.pem -signature vertrag.darlene.sign vertrag.txt
 Verified OK
@@ -164,23 +167,33 @@ Verified OK
 
 Elliot, noch ordentlich Verkatert, ist fest davon überzeugt das er noch nie etwas von diesem Vertrag gehört hätte. Abwarten denkt sich Darlene und legt folgende Befehle vor
 
+Unter verwendung des Public-Key von elliot und dessen Signatur kann gezeigt werden das auch er an dem Vertrag beteiltigt war. Die Signatur in vertag.elliot.sign wird entschlüsselt und die Ausgabe muss mit dem Inahlt der Datei vertrag.txt übereinstimmen.
 ```bash
 $ openssl dgst -verify elliot-public-key.pem -signature vertrag.elliot.sign vertrag.txt
 Verified OK
 ```
 
-Hier haben wir ein Verbindung
+Aus mathematischen Gründen wird die Signatur mindesten Doppelt so groß wie die Daten die Verschlüsselt wurden das kann ziemilich ausufern bei größeren Dateien. Daher wird meistens ein Hase der Datei erstellt und dieser wird dan signiert. Das spart nicht nur Platz sonder hat auch noch den Vorteil das mit großer Wahrscheinlichkeit die Daten welche Signiert wurde nicht verändert wurden.
 
-##### CA #####
+Am Ende des Tages ist das Signieren eines Dokumentes nichts anders als das erzeugen einer Kopie eben diese Dokuments und die verschslüsslunge des selbigen durch ein Private-Key. In der Praxis wird das Dokument nicht kopiert stattdessen wird ein Hash des Dokuments erzeugt und dieser wird durch den Private-Key Verschlüsselt. Die Signaturen und das Dokument können auch in einer Datei liegen welche auch nochmals Verschlüsselt ist oder in base64 Format vorliegt. Es gibt wie so oft in der Kryptowelt unterschiedlichste Kombinationen und Standards
 
-Aus mathematischen Gründen wird die Signatur mindesten Doppelt so groß wie die Daten die Verschlüsselt wurden da diese zu bei großen Daten zu noch größeren Daten führt erstellt man die Signatur meist über den Hash der Daten. 
+Mit dem folgendem Befehl erstellen wir eine Signatur über den SHA-512 Hash der Datei vertrag.txt. Die Signatur wird in der Datei vertrag.darlene.sha512.sign gespeichert.
+```bash
+$ openssl dgst -sign darlene.pem -sha512 -out vertrag.darlene.sha512.sign vertrag.txt
+Verified OK
+```
 
-Am Ende des Tages ist das Signieren eines Dokumentes nichts anders als das man eine kopie eines Dokuments anlegt und dieses Verschlüsselt. In der Praxis wird das Dokument nicht kopiert stattdessen wird ein Hash des Dokuments erzeugt und dieser wird durch den Private-Key Verschlüsselt. Die Signaturen und das Dokument können auch in einer Datei liegen welche auch nochmals Verschlüsselt ist oder in base64 Format vorliegt. Es gibt wie so oft in der Kryptowelt unterschiedlichste Kombinationen und Standards
+Möchte man zeigen das Darlene die den Vertrag unterzeichnet hat benötigt man hierfür den Public-Key von Darlene. Es muss mitangegeben werden welches hashing Verfahren zuvor benutzt wurde
+```bash
+$ openssl dgst -verify darlene-public-key.pem -sha512 -signature vertrag.darlene.sha512.sign vertrag.txt
+Verified OK
+```
 
+Am Ende steht nun noch die Frage offen woher weiß man das der Public-Key der zum Verifizieren benutzt wurde überhaupt darlene gehört. Es wäre möglich das jemand den Vertrag mit einem anderen Schlüssel-Paar unterschrieben hat und daraufhin behauptet Darelene hätte den Vertrag unterschrieben. Das gleiche Problem hatten wir auch schon zuvor mit Elliot dieser hätte ebenfalls behaupten können das der Key welcher zum überprüfen verwendet wurde überhaupt nicht sein Public-Key gewesen sei.
 
-* Hier ein Beispiel Ablauf *
+Das führt uns zu zwei neuen Begriff dem Zertifikat und der Certificate Authority (abkz. CA)
 
-* Hier noch ein Ablaufdiagram wie das Signieren funktioniert *
+TODO(tim):Hier noch ein Ablaufdiagram wie das Signieren funktioniert
 
 ##### Quellen #####
 * http://security.stackexchange.com/questions/57336/certificate-request-why-does-the-requester-have-to-create-a-private-key
@@ -188,9 +201,19 @@ Am Ende des Tages ist das Signieren eines Dokumentes nichts anders als das man e
 
 #### Zertifikate ####
 
-Noch immer ist das Böse kurz davor zu gewinnen. Also lasse es uns endlich bekämpfen.
+Bevor wir uns um die Begriffe Zertifikat und Certificate Authority widmen gibt es noch immer das Problem das das Böse kurz davor steht zu gewinnen. Also lass es uns endlich bekämpfen.
 
-Gehen wir hier zu erste eine Alternative zu der Verwendeten Methode aus dem Kapitel zuvor durch.
+Wie hätte Darlene zum einen Sicherstellen können ob der Public-Key Elliot gehört und wie hätte sie dafür sorgen können das nur der richtige Elliot die verschlüsselten Daten entschlüsseln kann und so die Standort Daten nicht in die falschen Hände gelangen.
+
+Elliot schreibt gerne Tagebuch (er muss wie man hört irgendwelche Probleme mit seinem Vater verarbeiten, wie man hört). Elliot ist ein verdamter Cyberpunk daher macht er das natürlich online und betreibt ein Blog dazu betreibt er einen HTTPS Server. Das heißt die Kommunikation findet Verschlüsselt statt und ebenso liegt auf dem Server ein Zertifikat (was das nun ist wird sich noch erschließen keine Angst). Da Darlene ebenfalls ziemlich Cyber ist weiß sie das zu nutzen und besorgt sich das Zertifikat des Servers.
+
+Dazu verbinden wir uns mit dem Server von Elliot und Fragen nach dem Zertifikat
+```bash
+openssl s_client -showcerts -connect https://r1ng0.3ll1ot:443 </dev/null
+```
+
+Beachte das durch eine Man-In-The-Middle-Attack ein falsche Certificate eingeschmuckelt werden kann.
+Es gibt immer noch ein Certificate in der Kette das man überprüfen kann doch irgendwann ist man oben angekommen diese Zertifkat muss irgend wie zu einem kommen ohne das es Manipuliert wurde im Fall von Browser fest ein gebaut.
 
 Public-Key aus dem Zertifkat des HTTPS Servers von Elliot und verschlüsseln die Daten darauß Prüfen das es von einer CA unterzeichet wurde.
 
@@ -315,6 +338,9 @@ es wird findet zu erste ein schlüsselautausch statt um darüber können dinge v
 
 Der Hash algorithmus wird verwendet um eine hash über alle gesendetn Init Message zu erzeugen 
 
+Wir CCA verwendet wird der pre-master-key (momentan gehe ich davon aus das das das errechnete Geheimnis ist welches im Diffe-Hellman-Schlüsselaustausch erzeugt wird) mit dem auf dem server hinterlegten public-key unterschrieben und an den client gesendet. 
+
+Momentan gehe ich davon aus das nur Client Anfragen erlaubt sind welche auf dem Server hinterlegt sind das heißt es gibt ein abgleich der subject informationen des certificates.
 
 ## Protokoll Aufbau ##
 
