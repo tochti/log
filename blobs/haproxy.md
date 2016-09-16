@@ -1,5 +1,16 @@
 # haproxy #
 
+## Benutzerverwaltung ##
+
+Möchte man das nur bestimmte Benutzer Zugang auf ein vom HAProxy verwaltetes Backend haben. Kann man dies unterandem über die HTTP Basic Authentication handhaben. Die Standard Lösung wäre userlist zu verwenden das funktioniert prima bis zu einer besimmten Anzahl von Benutzern. Da man für jeden neu hinzugefügten/entferneten Benutzer haproxy neustarten muss und das ziemlich lang dauert zu Problemen führen. Daher kann man alternative mittels Lua Script das ganze ncoh aufbohren. 
+
+Beispiel userlist
+Beispiel luascript
+Beispiel luascript ssl
+
+
+## Lua ##
+
 ## links ##
 * https://serversforhackers.com/using-ssl-certificates-with-haproxy
 * https://www.haproxy.com/doc/aloha/7.0/haproxy/tls.html
